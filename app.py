@@ -438,10 +438,25 @@ def set_screen(df: pd.DataFrame) -> None:
 def make_options(df: pd.DataFrame, answer_row: pd.Series, mode: str) -> list[str]:
     answer = answer_row["meaning"] if mode == "meaning" else answer_row["word"]
     pool_col = "meaning" if mode == "meaning" else "word"
-    wrong_pool = df[df["id"] != int(answer_row["id"])][pool_col].dropna().astype(str).tolist()
+
+    current_set_no = int(answer_row["set_no"])
+    current_word_id = int(answer_row["id"])
+
+    same_set_df = df[
+        (df["set_no"] == current_set_no) &
+        (df["id"] != current_word_id)
+    ]
+
+    wrong_pool = same_set_df[pool_col].dropna().astype(str).tolist()
+
+    if not wrong_pool:
+        wrong_pool = df[df["id"] != current_word_id][pool_col].dropna().astype(str).tolist()
+
     wrong = random.choice(wrong_pool) if wrong_pool else "오답 없음"
+
     options = [str(answer), str(wrong)]
     random.shuffle(options)
+
     return options
 
 

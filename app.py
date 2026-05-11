@@ -118,17 +118,20 @@ def load_words() -> pd.DataFrame:
         st.stop()
 
     df = pd.read_csv(DATA_PATH)
-    required_cols = {"id", "word", "meaning"}
+    required_cols = {"word", "meaning"}
+
     if not required_cols.issubset(set(df.columns)):
-        st.error("words.csv에는 id, word, meaning 컬럼이 필요합니다.")
+        st.error("words.csv에는 word, meaning 컬럼이 필요합니다.")
         st.stop()
 
-    df["id"] = df["id"].astype(int)
+    df = df.dropna(subset=["word", "meaning"]).reset_index(drop=True)
+
+    df["id"] = range(1, len(df) + 1)
     df["word"] = df["word"].astype(str)
     df["meaning"] = df["meaning"].astype(str)
     df["set_no"] = ((df["id"] - 1) // SET_SIZE) + 1
-    return df
 
+    return df
 
 def get_secret_value(key: str, default: str = "") -> str:
     try:

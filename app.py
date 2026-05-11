@@ -12,7 +12,7 @@ from supabase import Client, create_client
 
 APP_TITLE = "JW's Vocabulary"
 DATA_PATH = Path("data/words.csv")
-SET_SIZE = 3
+SET_SIZE = 100
 
 USER_TABLE = "vocab_users"
 RECORD_TABLE = "vocab_records"

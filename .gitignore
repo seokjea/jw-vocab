@@ -1,6 +1,6 @@
+.venv/
 __pycache__/
 *.pyc
-.venv/
-.env
+.DS_Store
 .streamlit/secrets.toml
 leaderboard.json
